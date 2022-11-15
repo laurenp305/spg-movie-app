@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-//create collection for mongo****
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/movieApp', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,

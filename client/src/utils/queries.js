@@ -9,7 +9,6 @@ export const QUERY_ME = gql`
       movieCount
       savedMovies {
         _id
-        authors
         description
         movieId
         image

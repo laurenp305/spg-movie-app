@@ -11,7 +11,7 @@ const SavedMovies = () => {
 
   const { loading, data: userData } = useQuery(QUERY_ME);
 
-  const savedMovies = userData?.me.savedMovies;
+  const savedMovies = userData?.me.SavedMovies;
 
   const [removeMovie] = useMutation(REMOVE_MOVIE, {
     refetchQueries: [
@@ -73,4 +73,4 @@ const SavedMovies = () => {
   );
 };
 
-export default savedMovies;
+export default SavedMovies;

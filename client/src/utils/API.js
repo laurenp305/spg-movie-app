@@ -1,6 +1,11 @@
-// export const searchGoogleBooks = (query) => {
-//   return fetch(`https://www.googleapis.com/ .  /v1/volumes?q=${query}`);
-// };
+//const API_KEY = '2e4dd8e00581ce40e2b2bff93ed85eaf';
+//const API_BASE = 'https://api.themoviedb.org/3';
 
+//We need to format fetch for this new API
 
-//Insert our connection string to the TMD database
+export const searchTheMovieDatabase = (query) => {
+  return fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
+};
+
+//Connection String for the movie DB
+//https://api.themoviedb.org/3/movie/550?api_key=2e4dd8e00581ce40e2b2bff93ed85eaf
