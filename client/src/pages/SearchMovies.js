@@ -5,7 +5,7 @@ import { SAVE_MOVIE } from '../utils/mutations';
 import { useQuery, useMutation } from '@apollo/client';
 
 import Auth from '../utils/auth';
-import { searchGoogleMovies } from '../utils/API';
+import { searchTheMovieDatabase } from '../utils/API';
 import { saveMovieIds, getSavedMovieIds } from '../utils/localStorage';
 
 const SearchMovies = () => {
@@ -39,25 +39,26 @@ const SearchMovies = () => {
     }
 
     try {
-      const response = await searchGoogleMovies(searchInput);
+      const response = await searchTheMovieDatabase(searchInput);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
 
-      const { items } = await response.json();
+      const { results: moviesArray } = await response.json();
+      console.log(moviesArray);
+      // const { items } = await response.json(); ******
 
-      const movieData = items.map((movie) => ({
-        movieId: movie.id,
-        authors: movie.volumeInfo.authors || ['No author to display'],
-        title: movie.volumeInfo.title,
-        description: movie.volumeInfo.description,
-        image: movie.volumeInfo.imageLinks?.thumbnail || '',
-        link: movie.volumeInfo.canonicalVolumeLink
+       const movieData = moviesArray.map((movie) => ({
+        title: movie.title,
+        image: movie.poster_path,
+        description: movie.overview,
+        release_date: movie.release_date,
+        movieId: movie.id
       }));
 
       setSearchedMovies(movieData);
-      setSearchInput('');
+      // setSearchInput('');
     } catch (err) {
       console.error(err);
     }
@@ -78,12 +79,11 @@ const SearchMovies = () => {
       await saveMovie({
         variables: { 
           userId: userData.data?.me._id, 
-          authors: movieToSave.authors, 
-          description: movieToSave.description, 
+          title: movieToSave.title,
+          image: movieToSave.poster_path,
+          description: movieToSave.overview, 
           movieId: movieToSave.movieId, 
-          image: movieToSave.image, 
-          link: movieToSave.link, 
-          title: movieToSave.title
+          release_date: movieToSave.release_date,
         }
       });
       setSavedMovieIds([...savedMovieIds, movieToSave.movieId]);
@@ -130,11 +130,11 @@ const SearchMovies = () => {
             return (
               <Card key={movie.movieId} border='dark'>
                 {movie.image ? (
-                  <Card.Img src={movie.image} alt={`The cover for ${movie.title}`} variant='top' />
+                  <Card.Img src={'http://image.tmdb.org/t/p/w500' + movie.image} alt={`The cover for ${movie.title}`} variant='top' />
                 ) : null}
                 <Card.Body>
                   <Card.Title>{movie.title}</Card.Title>
-                  <p className='small'>Authors: {movie.authors}</p>
+                  <p className='small'>Release Date: {movie.release_date}</p>
                   <Card.Text>{movie.description}</Card.Text>
                   {Auth.loggedIn() && (
                     <Button
@@ -146,9 +146,7 @@ const SearchMovies = () => {
                         : 'Save this Movie!'}
                     </Button>
                   )}
-                  <div className='google-link'>
-                    <a href={movie.link} target='_blank' rel='noopener noreferrer'>View in Google movies</a>
-                  </div>
+              
                 </Card.Body>
               </Card>
             );

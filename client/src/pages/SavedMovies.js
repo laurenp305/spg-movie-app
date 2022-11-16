@@ -26,9 +26,6 @@ const SavedMovies = () => {
   const handleDeleteMovie = async (movieId) => {
 
     try {
-      const { data } = await removeMovie({
-        variables: { userId: userData.me._id, movieId: movieId  }
-      });
       removeMovieId(movieId);
     } catch (e) {
       console.error(e);
