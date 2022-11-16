@@ -6,8 +6,3 @@
 export const searchTheMovieDatabase = (query) => {
   return fetch(`https://api.themoviedb.org/3/search/movie?api_key=2e4dd8e00581ce40e2b2bff93ed85eaf&language=en-US&query=${query}&page=1&include_adult=false`);
 };
-
-//Connection String for the movie DB
-//https://api.themoviedb.org/3/movie/558?api_key=2e4dd8e00581ce40e2b2bff93ed85eaf
-
-// https://api.themoviedb.org/3/search/movie?api_key=2e4dd8e00581ce40e2b2bff93ed85eaf&language=en-US&query=StarWars&page=1&include_adult=true
